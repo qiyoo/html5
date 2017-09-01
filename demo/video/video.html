@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>video</title>
+  <style>
+    .videoBtn{
+      width: 600px;
+      margin:30px auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="videoBtn">
+    <button onclick="playAndPause()">播放/暂停</button>
+    <button onclick="changeBig()">大</button>
+    <button onclick="changeMiddle()">中</button>
+    <button onclick="changeSmall()">小</button>
+
+    <br/><br/>
+
+    <video  id="myVideo" src="./source/n0021un9h7z.p203.1.mp4" 
+            width="100%" 
+            height="100%" 
+            controls="controls" 
+            autoplay="true">
+            你的浏览器不支持html5的video标签
+    </video>
+  </div>
+ <script>
+
+   
+    var myVideo = document.getElementById("myVideo");
+    //播放/暂停
+    function playAndPause(){
+      if(myVideo.paused){
+        myVideo.play();
+      }else{
+        myVideo.pause();
+      }
+    }
+
+    //显示控制的大小
+    function changeBig(){
+      myVideo.width=700;
+    }
+
+    function changeMiddle(){
+      myVideo.width = 450;
+    }
+
+    function changeSmall(){
+      myVideo.width = 300;
+    }
+ </script>
+</body>
+</html>

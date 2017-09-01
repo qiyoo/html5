@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>音频</title>
+    <style>
+        *{
+            margin:0px;
+            padding: 0px;
+        }
+        #img{
+            background: url("images/missdong.jpg");
+            width: 268px;
+            height: 268px;
+            margin:100px  auto;
+            border-radius:134px;
+            -webkit-animation: scroll 10s linear infinite ;
+        }
+        @-webkit-keyframes scroll {
+            0%{
+                -webkit-transform: rotate(0deg);
+            }
+            100%{
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        #silderBar{
+            width: 600px;
+            margin: 0 auto;
+        }
+        #musicName{
+            margin: 0 auto;
+            width:110px;
+            -webkit-animation: color 10s linear infinite;
+        }
+        @-webkit-keyframes color{
+            0%{
+                color: red;
+            }
+            13%{
+                color:orange;
+            }
+            26%{
+			color:yellow;
+            }
+            39%{
+                color:green;
+            }
+            52%{
+                color:cyan;
+            }
+            65%{
+                color:blue;
+            }
+            78%{
+                color:violet;
+            }
+            100%{
+                color:red;
+            }
+        }
+        #controlBtn{
+            width:212px;
+            margin: 30px auto;
+            height: 64px;
+        }
+        #controlBtn div{
+            cursor: pointer;
+            float: left;
+            width: 64px;
+            height: 64px;
+            background-size: cover  
+        }
+        #btnPlayAndPaused{
+            background: url("images/jtbq_014.png");
+        }
+        #buttonStop{
+            margin-left: 10px;
+            background: url("images/jtbq_016.png");
+        }
+    </style>
+</head>
+<body>
+ <link rel="stylesheet" href="./jquery-ui.css"/>
+ 
+  <!-- 只显示一个控制条 -->
+  <!-- <audio src="./source/missdong.mp3" controls="controls" autoplay="autoplay" loop="loop"></audio> -->
+  <!--手动控制开始、播放、暂停事件，在播放的同时，有个图片在360度转动,显示进度条 -->
+  <div id="img" style="animation-play-state: paused;"></div>
+  <audio id="player" src="./source/missdong.mp3"  preload="preload" loop="loop"></audio>
+  <div id="silderBar"></div>
+  <div id="musicName" style="animation-play-state:paused;">
+        董小姐-宋冬野
+  </div>
+  <div id="controlBtn">
+    <div id="btnPlayAndPaused"  onclick="toggle()"></div>
+    <div id="buttonStop" onclick="stop()"></div>
+  </div>
+  <script type="text/javascript" src="./jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="./jquery-ui.js"></script>
+  <script>
+      var timer;
+      var flag = false;//用来标示播放和暂停的状态 false：暂停 true：播放
+      
+      $(function(){
+          //页面加载完成之后的执行的代码
+         document.getElementById("img").style.webkitAnimationPlayState = "paused";
+         document.getElementById("musicName").style.webkitAnimationPlayState = "paused";
+         
+ 
+         var player = $("#player")[0];
+         //进度条
+         $("#silderBar").slider({
+             range:"max",
+             min:0,
+             step:1,
+             value:0,
+             max:player.duration,
+             slide:function(event,ui){
+                 player.currentTime = ui.value;
+             }
+         });
+      })
+ 
+      function toggle(){
+          if(flag == false){
+             document.getElementById("img").style.webkitAnimationPlayState = "";
+             document.getElementById("musicName").style.webkitAnimationPlayState = "";
+ 
+              //播放器对象开始播放
+              var player = document.getElementById("player");
+              player.play();
+ 
+              //启动一个定时器
+              timer = setInterval(function(){
+                  //获取滑块位置
+                  var value = $("#player")[0].currentTime;
+                  //设置滑块位置
+                  $("#silderBar").slider("option","value",value);
+              },500);
+              //给按钮跟换背景图片
+              document.getElementById("btnPlayAndPaused").style.backgroundImage = "url(images/jtbq_013.png)";
+              flag = true;
+          }else{
+ 
+             document.getElementById("img").style.webkitAnimationPlayState = "paused";
+             document.getElementById("musicName").style.webkitAnimationPlayState = "paused";
+ 
+              //播放器对象开始播放
+              var player = document.getElementById("player");
+              //音乐停止
+              player.pause();
+             
+              //停止定时器
+              clearInterval(timer);
+              //给按钮跟换背景图片
+              document.getElementById("btnPlayAndPaused").style.backgroundImage = "url(images/jtbq_014.png)";
+              flag = false;
+          }
+      }
+ 
+      function stop(){
+         document.getElementById("img").style.webkitAnimationPlayState = "paused";
+         document.getElementById("musicName").style.webkitAnimationPlayState = "paused";
+ 
+             //播放器对象开始播放
+             var player = document.getElementById("player");
+              //音乐停止
+             player.pause();
+              //audio音乐回到最初播放时间
+             player.currentTime = 0;
+ 
+               //停止定时器
+               clearInterval(timer);
+              $("#silderBar").slider("option","value",0);
+ 
+              document.getElementById("btnPlayAndPaused").style.backgroundImage = "url(images/jtbq_014.png)";
+              flag = false;
+          }
+  </script>
+</body>
+</html>
